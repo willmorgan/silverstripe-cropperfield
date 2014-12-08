@@ -1,0 +1,30 @@
+{
+	"name": "willmorgan/silverstripe-cropperfield",
+	"type": "silverstripe-module",
+	"description": "Provides an interface for you to generate thumbnails of things in the CMS. Adapters can be used to extend the functionality to thumbnail videos, PDF documents, etc.",
+	"keywords": ["silverstripe", "thumbnail", "crop"],
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Will Morgan",
+			"homepage": "http://willmorgan.co.uk",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/willmorgan/silverstripe-cropperfield/issues",
+		"source": "https://github.com/willmorgan/silverstripe-cropperfield/"
+	},
+	"require": {
+		"composer/installers": "1.0.*@dev",
+		"php": ">=5.3"
+	},
+	"extra": {
+		"installer-name": "cropperfield"
+	},
+	"autoload": {
+		"psr-4": {
+			"CropperField\\": "code/"
+		}
+	}
+}
