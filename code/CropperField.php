@@ -1,5 +1,6 @@
 <?php namespace CropperField;
 
+use CropperField\Cropper\GD as GDCropper;
 use CropperField\AdapterInterface;
 use DataObjectInterface;
 use Requirements;
@@ -82,49 +83,19 @@ class CropperField extends FormField {
 	 * @return Image
 	 */
 	public function generateCropped() {
-		$adapter = $this->getAdapter();
-		$file = $adapter->getFile();
-		$filename = $adapter->getImageFilename();
-		$extension = strtolower($file->getExtension());
-		$cropData = $this->getCropData();
-		$existing = call_user_func('imagecreatefrom' . $extension, $filename);
-		$new = imagecreatetruecolor(
-			$this->getOption('max_width'),
-			$this->getOption('max_height')
-		);
-		if(!$existing) {
-			throw new \ErrorException('Failed to open a GD resource to the image');
-		}
-		if(!$new) {
-			throw new \ErrorException('Failed to create a new GD resource');
-		}
-		$resampleResult = imagecopyresampled(
-			$new,
-			$existing,
-			0,
-			0,
-			$cropData['x'],
-			$cropData['y'],
-			$width,
-			$height,
-			$cropData['width'],
-			$cropData['height']
-		);
-		if(!$resampleResult) {
-			throw new \ErrorException('Image failed to resize');
-		}
-		$thumbFile = sprintf('%s/%s-thumbnail.%s',
-			dirname($filename),
-			sha1($filename),
-			$extension
-		);
-		$saveResult = call_user_func('image' . $extension, $new, $thumbFile);
-		if(!$saveResult) {
-			throw new \ErrorException('Image failed to save');
-		}
+		$file = $this->getAdapter()->getFile();
 		$thumbImage = new Image();
 		$thumbImage->ParentID = $file->ParentID;
-		$thumbImage->Filename = $thumbFile;
+		$cropper = new GDCropper();
+		$cropper->setCropData($this->getCropData());
+		$cropper->setSourceImage($file);
+		$cropper->setTargetWidth(
+			$this->getOption('max_width')
+		);
+		$cropper->setTargetHeight(
+			$this->getOption('max_height')
+		);
+		$cropper->crop($thumbImage);
 		$thumbImage->write();
 		return $thumbImage;
 	}
