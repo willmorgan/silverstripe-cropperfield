@@ -7,6 +7,7 @@ use Requirements;
 use DataObject;
 use FormField;
 use Director;
+use JSConfig;
 use Image;
 use Debug;
 use Form;
@@ -157,7 +158,7 @@ class CropperField extends FormField {
 	}
 
 	public function Field($properties = array()) {
-		static::require_frontend();
+		$this->requireFrontend();
 		return parent::Field($properties);
 	}
 
@@ -165,7 +166,7 @@ class CropperField extends FormField {
 	 * Pull in the cropper.js requirements. If in dev mode, bring in unminified.
 	 * @return void
 	 */
-	public static function require_frontend() {
+	protected function requireFrontend() {
 		$extension = Director::isLive() ? '.min' : '';
 		$cssFile = CROPPERFIELD_PATH . '/cropper/cropper' . $extension . '.css';
 		$jsFiles = array(
@@ -174,6 +175,10 @@ class CropperField extends FormField {
 		);
 		Requirements::css($cssFile);
 		Requirements::combine_files('cropperfield-all.js', $jsFiles);
+		JSConfig::add('CropperField', array(
+			$this->getName() => $this->getOptions()
+		));
+		JSConfig::insert();
 	}
 
 }
