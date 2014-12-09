@@ -73,10 +73,10 @@ class GD extends GenericCropper {
 		switch($extension) {
 			case 'jpeg':
 			case 'jpg':
-				$response = imagejpeg($canvas, $filename, 10);
+				$response = imagejpeg($canvas, $filename, 80);
 			break;
 			case 'png':
-				$response = imagepng($canvas, $filename);
+				$response = imagepng($canvas, $filename, 8);
 			break;
 			case 'gif':
 				$response = imagegif($canvas, $filename);
