@@ -1,0 +1,67 @@
+.cropperfield {
+}
+
+.cropperfield__thumbarea {
+	position: relative;
+	height: 128px;
+}
+
+.cropperfield__existing,
+.cropperfield__preview-container {
+	position: absolute;
+	opacity: 0;
+	max-width: 128px;
+	max-height: 128px;
+	-webkit-transition: opacity linear .2s;
+	transition: opacity linear .2s;
+}
+
+.cropperfield__controls {
+	position: absolute;
+	top: 0;
+	left: 128px;
+}
+
+.cropperfield--cropping .cropperfield__preview-container,
+.cropperfield--inactive .cropperfield__existing {
+	opacity: 1;
+}
+
+.cropperfield__preview-container {
+	overflow: hidden;
+}
+
+.cropperfield__cropper {
+	max-width: 600px;
+}
+
+.cropperfield__cropper-container {
+	overflow: hidden;
+	max-width: 600px;
+	height: 0;
+	transition: height ease-in-out .3s;
+	-webkit-transition: height ease-in-out .3s;
+}
+
+.cropperfield__label {
+	display: inline-block;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	font-size: 0.9em;
+	padding: .25em .5em;
+	background: #fff;
+	background: rgba(255, 255, 255, .85);
+	border-radius: 4px 0 0 0;
+	border-width: 1px 0 0 1px;
+}
+
+.cropperfield__label--preview {
+	border-color: #c00;
+	color: #c00;
+}
+
+.cropperfield__label--existing {
+	border-color: #0c0;
+	color: #0c0;
+}

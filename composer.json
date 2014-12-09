@@ -16,6 +16,7 @@
 		"source": "https://github.com/willmorgan/silverstripe-cropperfield/"
 	},
 	"require": {
+		"betterbrief/silverstripe-jsconfig": "dev-master",
 		"composer/installers": "1.0.*@dev",
 		"php": ">=5.3"
 	},

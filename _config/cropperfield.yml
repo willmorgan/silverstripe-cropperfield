@@ -1,0 +1,10 @@
+---
+Name: cropperfieldconfig
+---
+Injector:
+  CropperService:
+    factory: 'CropperFactory'
+  CropperFactory:
+    class: 'CropperField\Service\CropperFactory'
+CropperFactory:
+  cropper: 'CropperField\Cropper\GD'
