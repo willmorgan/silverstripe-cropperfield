@@ -1,19 +1,34 @@
 <?php namespace CropperField;
 
+/**
+ * CropperField
+ * Uses the GD cropper by default, but you can override this by creating your
+ * own config YML and overriding CropperFactory.cropper.
+ *
+ */
+
+// CropperField core dependencies
+use CropperField\CropperInterface;
 use CropperField\Cropper\GD as GDCropper;
 use CropperField\AdapterInterface;
-use DataObjectInterface;
-use Requirements;
-use DataObject;
 use FormField;
-use Director;
-use JSConfig;
+use Injector;
+
+// For managing objects, etc.
 use Image;
-use Debug;
-use Form;
+use DataObject;
+use DataObjectInterface;
+
+// Frontend dependencies
+use JSConfig;
+use Director;
+use Requirements;
 
 class CropperField extends FormField {
 
+	/**
+	 * @var array
+	 */
 	protected static $default_options = array(
 	    'aspect_ratio' => 1,
 	    'min_height' => 128,
@@ -22,19 +37,40 @@ class CropperField extends FormField {
 	    'max_width' => 128,
 	);
 
+	private static $dependencies = array(
+		'cropper' => '%$CropperService',
+	);
+
+	/**
+	 * Determined by getRecord (like UploadField)
+	 * @var DataObject
+	 */
 	protected $record;
 
+	/**
+	 * The object that does the hard work.
+	 * @var \CropperField\Cropper\CropperInterface
+	 */
+	protected $cropper;
+
+	/**
+	 * @param string $relation of the relationship, and thus, the field
+	 * @param string $title of the field
+	 * @param AdapterInterface $adapter
+	 * @param array $options override for aspect ratio and size changes
+	 */
 	public function __construct(
-		$name,
+		$relation,
 		$title = null,
 		AdapterInterface $adapter,
 		array $options = array()
 	) {
-		parent::__construct($name, $title);
+		parent::__construct($relation, $title);
 		$this->setAdapter($adapter);
 		$this->setTemplate('CropperField');
 		$this->addExtraClass('stacked');
 		$this->setOptions($options);
+		$this->injectCropper();
 	}
 
 	/**
@@ -78,6 +114,33 @@ class CropperField extends FormField {
 		return $this;
 	}
 
+	/**
+	 * @return CropperInterface
+	 */
+	public function getCropper() {
+		return $this->cropper;
+	}
+
+	public function setCropper(CropperInterface $cropper) {
+		$this->cropper = $cropper;
+		return $this;
+	}
+
+	/**
+	 * Use Injector to locate a CropperInterface implementor.
+	 * The CropperService is defined with Injector's config in cropperfield.yml
+	 * @return $this
+	 */
+	public function injectCropper() {
+		return $this->setCropper(
+			Injector::inst()->get('CropperService')
+		);
+	}
+
+	/**
+	 * If enabled, crop the image, save as a new file, and link it via relation
+	 * @return void
+	 */
 	public function saveInto(DataObjectInterface $object) {
 		if(!$this->canCrop()) {
 			return;
@@ -115,6 +178,9 @@ class CropperField extends FormField {
 		return $this->record;
 	}
 
+	/**
+	 * @return Image (hopefully)
+	 */
 	public function getExistingThumbnail() {
 		return $this->getRecord()->{$this->getName()}();
 	}
@@ -126,7 +192,7 @@ class CropperField extends FormField {
 		$file = $this->getAdapter()->getFile();
 		$thumbImage = new Image();
 		$thumbImage->ParentID = $file->ParentID;
-		$cropper = new GDCropper();
+		$cropper = $this->getCropper();
 		$cropper->setCropData($this->getCropData());
 		$cropper->setSourceImage($file);
 		$cropper->setTargetWidth(
