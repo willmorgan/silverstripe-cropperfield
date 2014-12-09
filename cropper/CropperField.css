@@ -1,0 +1,27 @@
+.cropperfield {
+	max-width: 600px;
+}
+
+.cropperfield__thumbarea {
+	position: relative;
+	height: 128px;
+}
+
+.cropperfield__existing,
+.cropperfield__preview-container {
+	position: absolute;
+	opacity: 0;
+	max-width: 128px;
+	max-height: 128px;
+	-webkit-transition: opacity linear .2s;
+	transition: opacity linear .2s;
+}
+
+.cropperfield--cropping .cropperfield__preview-container,
+.cropperfield--inactive .cropperfield__existing {
+	opacity: 1;
+}
+
+.cropperfield__preview-container {
+	overflow: hidden;
+}

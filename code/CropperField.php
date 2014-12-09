@@ -168,12 +168,15 @@ class CropperField extends FormField {
 	 */
 	protected function requireFrontend() {
 		$extension = Director::isLive() ? '.min' : '';
-		$cssFile = CROPPERFIELD_PATH . '/cropper/cropper' . $extension . '.css';
+		$cssFiles = array(
+			CROPPERFIELD_PATH . '/cropper/cropper' . $extension . '.css',
+			CROPPERFIELD_PATH . '/cropper/CropperField.css',
+		);
 		$jsFiles = array(
 			CROPPERFIELD_PATH . '/cropper/cropper' . $extension . '.js',
 			CROPPERFIELD_PATH . '/cropper/CropperField.js',
 		);
-		Requirements::css($cssFile);
+		Requirements::combine_files('cropperfield-all.css', $cssFiles);
 		Requirements::combine_files('cropperfield-all.js', $jsFiles);
 		JSConfig::add('CropperField', array(
 			$this->getName() => $this->getOptions()

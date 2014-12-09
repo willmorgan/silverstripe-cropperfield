@@ -1,9 +1,9 @@
-<div class="container js-cropperfield" data-field-id="$Name" style="max-width: 600px">
+<div class="container cropperfield js-cropperfield" data-field-id="$Name">
 	<div class="cropperfield__thumbarea">
-		<div class="cropperfield__existing" style="max-width: 128px">
+		<div class="cropperfield__existing">
 			$ExistingThumbnail
 		</div>
-		<div class="cropperfield__preview-container" style="max-width: 128px; max-height: 128px; overflow: hidden">
+		<div class="cropperfield__preview-container">
 			<div class="cropperfield__preview"></div>
 		</div>
 	</div>
