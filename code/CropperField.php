@@ -4,6 +4,7 @@ use CropperField\Cropper\GD as GDCropper;
 use CropperField\AdapterInterface;
 use DataObjectInterface;
 use Requirements;
+use DataObject;
 use FormField;
 use Director;
 use Image;
@@ -19,6 +20,8 @@ class CropperField extends FormField {
 	    'min_width' => 128,
 	    'max_width' => 128,
 	);
+
+	protected $record;
 
 	public function __construct(
 		$name,
@@ -77,6 +80,39 @@ class CropperField extends FormField {
 	public function saveInto(DataObjectInterface $object) {
 		$object->setField($this->getName() . 'ID', $this->generateCropped()->ID);
 		$object->write();
+	}
+
+	/**
+	 * Force a record to be used as "Parent" for uploaded Files (eg a Page with a has_one to File)
+	 * @param DataObject $record
+	 */
+	public function setRecord($record) {
+		$this->record = $record;
+		return $this;
+	}
+	/**
+	 * Get the record to use as "Parent" for uploaded Files (eg a Page with a has_one to File) If none is set, it will
+	 * use Form->getRecord() or Form->Controller()->data()
+	 *
+	 * @return DataObject
+	 */
+	public function getRecord() {
+		if (!$this->record && $this->form) {
+			if (($record = $this->form->getRecord()) && ($record instanceof DataObject)) {
+				$this->record = $record;
+			} elseif (($controller = $this->form->Controller())
+				&& $controller->hasMethod('data')
+				&& ($record = $controller->data())
+				&& ($record instanceof DataObject)
+			) {
+				$this->record = $record;
+			}
+		}
+		return $this->record;
+	}
+
+	public function getExistingThumbnail() {
+		return $this->getRecord()->{$this->getName()}();
 	}
 
 	/**
