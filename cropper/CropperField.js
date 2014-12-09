@@ -11,7 +11,10 @@
 			var preview = field.find('.cropperfield__preview');
 			var onToggle = function() {
 				var method = $(this).is(':checked') ? 'enable' : 'disable';
+				var inClass = method == 'enable' ? 'cropperfield--cropping' : 'cropperfield--inactive';
+				var outClass = method !== 'enable' ? 'cropperfield--cropping' : 'cropperfield--inactive';
 				image.cropper(method);
+				field.removeClass(outClass).addClass(inClass);
 			};
 			image.cropper({
 				multiple: true,
