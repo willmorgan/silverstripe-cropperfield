@@ -137,7 +137,7 @@ abstract class GenericCropper implements CropperInterface {
 	/**
 	 * @return string
 	 */
-	public function createThumbnailFilename() {
+	protected function createThumbnailFilename() {
 		$file = $this->getSourceImage();
 		$filename = $file->getFilename();
 		$hashBase = $filename;
@@ -153,6 +153,18 @@ abstract class GenericCropper implements CropperInterface {
 		}
 		while(file_exists($thumbFile));
 		return $thumbFile;
+	}
+
+	/**
+	 * Convert an absolute path to one relative to the base path
+	 * @return string
+	 */
+	protected function normaliseFilename($absolutePath) {
+		$regex = sprintf(
+			'#^%s#',
+			addslashes(BASE_PATH) . DIRECTORY_SEPARATOR
+		);
+		return preg_replace($regex, '', $absolutePath);
 	}
 
 }
