@@ -87,7 +87,7 @@ class GD extends GenericCropper {
 		if(!$response) {
 			throw new GD_ImageWriteException();
 		}
-		return $filename;
+		return $this->normaliseFilename($filename);
 	}
 
 }
