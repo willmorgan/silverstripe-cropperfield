@@ -78,6 +78,9 @@ class CropperField extends FormField {
 	}
 
 	public function saveInto(DataObjectInterface $object) {
+		if(!$this->canCrop()) {
+			return;
+		}
 		$object->setField($this->getName() . 'ID', $this->generateCropped()->ID);
 		$object->write();
 	}
@@ -144,6 +147,15 @@ class CropperField extends FormField {
 		return json_decode($value['Data'], true);
 	}
 
+	/**
+	 * If the tickbox on the frontend is unchecked, do not regenerate
+	 * @return boolean
+	 */
+	public function canCrop() {
+		$value = $this->Value();
+		return !empty($value['Enabled']);
+	}
+
 	public function Field($properties = array()) {
 		static::require_frontend();
 		return parent::Field($properties);
@@ -164,8 +176,4 @@ class CropperField extends FormField {
 		Requirements::combine_files('cropperfield-all.js', $jsFiles);
 	}
 
-}
-
-function imagecreatefromjpg($file) {
-	return imagecreatefromjpeg($file);
 }
