@@ -25,6 +25,7 @@
 	},
 	"autoload": {
 		"psr-4": {
+			"CropperTest\\": "tests/",
 			"CropperField\\": "code/"
 		}
 	}
