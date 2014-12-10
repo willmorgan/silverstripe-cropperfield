@@ -1,0 +1,11 @@
+Image:
+  broken_image:
+    Name: 'BROKENIMAGE'
+  object_1_mainimage:
+    Name: 'Gus The Cat'
+    Filename: 'gus-the-cat.jpg'
+CropObject:
+  object_1:
+    MainImage: =>Image.object_1_mainimage
+  bad_filename:
+    MainImage: =>Image.broken_image
