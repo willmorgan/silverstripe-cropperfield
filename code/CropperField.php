@@ -211,7 +211,14 @@ class CropperField extends FormField {
 	 */
 	public function getCropData() {
 		$value = $this->Value();
-		return json_decode($value['Data'], true);
+		if(empty($value['Data'])) {
+			throw new CropperField_NoCropDataException;
+		}
+		$data = json_decode($value['Data'], true);
+		if(!isset($data)) {
+			throw new CropperField_InvalidCropDataException;
+		}
+		return $data;
 	}
 
 	/**
@@ -251,3 +258,6 @@ class CropperField extends FormField {
 	}
 
 }
+
+class CropperField_NoCropDataException extends \InvalidArgumentException { }
+class CropperField_InvalidCropDataException extends \InvalidArgumentException { }
