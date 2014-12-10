@@ -4,6 +4,7 @@ use Form;
 use FieldList;
 use Controller;
 use CropperField;
+use CropObject;
 
 class CropperFieldTest extends TestCase {
 
@@ -88,6 +89,57 @@ class CropperFieldTest extends TestCase {
 		$this->assertEquals(
 			$sampleCropData,
 			$data
+		);
+	}
+
+	/**
+	 * Test the getRecord method's "clever" form based path
+	 */
+	public function testCleverGetRecord() {
+		$cropObject = new CropObject();
+		$cropObject->write();
+		$this->setCropObject($cropObject);
+
+		// Create a test form
+		$form = $this->createForm();
+		$this->assertNotEquals(
+			$cropObject,
+			$form->getRecord(),
+			'Precondition failed: initially, the form should have no record'
+		);
+
+		// Load its data, thus triggering Form's internal setRecord
+		$form->loadDataFrom($cropObject);
+		$this->assertEquals(
+			$cropObject,
+			$form->getRecord(),
+			'Precondition failed: loadDataFrom should set the Form record'
+		);
+
+		$field = $this->createField();
+
+		$this->assertNull($field->getRecord());
+
+		$field->setForm($form);
+		$this->assertEquals(
+			$cropObject,
+			$form->getRecord(),
+			'Form should provide the record if none is directly specified'
+		);
+	}
+
+	/**
+	 * Mundane setting and getting...
+	 */
+	public function testSetGetRecord() {
+		$cropObject = new CropObject();
+		$cropObject->write();
+		$this->setCropObject($cropObject);
+		$field = $this->createField();
+		$field->setRecord($cropObject);
+		$this->assertEquals(
+			$cropObject,
+			$field->getRecord()
 		);
 	}
 
