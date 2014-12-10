@@ -8,9 +8,9 @@
  */
 
 // CropperField core dependencies
-use CropperField\CropperInterface;
+use CropperField\Cropper\CropperInterface;
 use CropperField\Cropper\GD as GDCropper;
-use CropperField\AdapterInterface;
+use CropperField\Adapter\AdapterInterface;
 use FormField;
 use Injector;
 
