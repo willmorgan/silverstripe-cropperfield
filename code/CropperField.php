@@ -153,7 +153,7 @@ class CropperField extends FormField {
 	 * Force a record to be used as "Parent" for uploaded Files (eg a Page with a has_one to File)
 	 * @param DataObject $record
 	 */
-	public function setRecord($record) {
+	public function setRecord(DataObject $record) {
 		$this->record = $record;
 		return $this;
 	}
@@ -164,15 +164,16 @@ class CropperField extends FormField {
 	 * @return DataObject
 	 */
 	public function getRecord() {
-		if (!$this->record && $this->form) {
-			if (($record = $this->form->getRecord()) && ($record instanceof DataObject)) {
+		$form = $this->getForm();
+		if (!$this->record && $form) {
+			if (($record = $form->getRecord()) && ($record instanceof DataObject)) {
 				$this->record = $record;
-			} elseif (($controller = $this->form->Controller())
+			} elseif (($controller = $form->Controller())
 				&& $controller->hasMethod('data')
 				&& ($record = $controller->data())
 				&& ($record instanceof DataObject)
 			) {
-				$this->record = $record;
+				$this->setRecord($record);
 			}
 		}
 		return $this->record;
