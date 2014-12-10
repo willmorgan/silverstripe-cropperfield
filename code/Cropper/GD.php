@@ -48,8 +48,8 @@ class GD extends GenericCropper {
 	 */
 	public function loadExistingImage($filename, $extension) {
 		$filename = BASE_PATH . DIRECTORY_SEPARATOR . $filename;
-		if(!file_exists($filename) || !is_readable($filename)) {
-			throw new GD_ImageReadException();
+		if(!is_readable($filename)) {
+			throw new GD_ImageReadException($filename);
 		}
 		switch($extension) {
 			case 'jpeg':

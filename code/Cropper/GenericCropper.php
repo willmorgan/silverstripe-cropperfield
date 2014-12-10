@@ -42,7 +42,11 @@ abstract class GenericCropper implements CropperInterface {
 	 */
 	protected $targetHeight;
 
-	public function setSourceImage(Image $image) {
+	public function setSourceImage(\Image $image) {
+		$filename = $image->getFilename();
+		if(!(is_file($filename) && is_readable($filename))) {
+			throw new GenericCropper_InvalidFileException;
+		}
 		$this->source = $image;
 		return $this;
 	}
@@ -168,3 +172,5 @@ abstract class GenericCropper implements CropperInterface {
 	}
 
 }
+
+class GenericCropper_InvalidFileException extends \InvalidArgumentException { }

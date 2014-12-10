@@ -15,6 +15,7 @@ use FormField;
 use Injector;
 
 // For managing objects, etc.
+use File;
 use Image;
 use DataObject;
 use DataObjectInterface;
@@ -191,6 +192,9 @@ class CropperField extends FormField {
 	 */
 	public function generateCropped() {
 		$file = $this->getAdapter()->getFile();
+		if(!$file instanceof File || !$file->exists()) {
+			throw new CropperField_AdapterBadFileException;
+		}
 		$thumbImage = new Image();
 		$thumbImage->ParentID = $file->ParentID;
 		$cropper = $this->getCropper();
@@ -262,3 +266,4 @@ class CropperField extends FormField {
 
 class CropperField_NoCropDataException extends \InvalidArgumentException { }
 class CropperField_InvalidCropDataException extends \InvalidArgumentException { }
+class CropperField_AdapterBadFileException extends \InvalidArgumentException { }

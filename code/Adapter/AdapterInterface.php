@@ -19,6 +19,11 @@ interface AdapterInterface {
 	public function getFile();
 
 	/**
+	 * @return \Image
+	 */
+	public function getSourceImage();
+
+	/**
 	 * @return string
 	 */
 	public function getFilename();
