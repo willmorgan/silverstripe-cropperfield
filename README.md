@@ -1,6 +1,7 @@
 SilverStripe CropperField
 ===
 
+[![Build Status](https://secure.travis-ci.org/willmorgan/silverstripe-cropperfield.png?branch=master)](http://travis-ci.org/willmorgan/silverstripe-cropperfield)
 
 Do you need to crop your images for art direction purposes?
 
