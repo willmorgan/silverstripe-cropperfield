@@ -146,17 +146,23 @@ abstract class GenericCropper implements CropperInterface {
 		$filename = $file->getFilename();
 		$hashBase = $filename;
 		$extension = strtolower($file->getExtension());
+		$cropDirectory = sprintf('%s/%s/%s',
+			BASE_PATH,
+			dirname($filename),
+			'cropped'
+		);
+		$ssFolderpath = str_replace(ASSETS_PATH, '', $cropDirectory);
+		$folder = \Folder::find_or_make($ssFolderpath);
 		do {
-			$thumbFile = sprintf('%s/%s/%s-thumbnail.%s',
-				BASE_PATH,
-				dirname($filename),
+			$cropFile = sprintf('%s/%s.%s',
+				$cropDirectory,
 				sha1($hashBase),
 				$extension
 			);
 			$hashBase .= uniqid();
 		}
-		while(file_exists($thumbFile));
-		return $thumbFile;
+		while(file_exists($cropFile));
+		return $cropFile;
 	}
 
 	/**
