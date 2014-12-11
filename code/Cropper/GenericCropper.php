@@ -147,12 +147,63 @@ abstract class GenericCropper implements CropperInterface {
 	 * @param float $ratio aspect ratio of the target cropped image
 	 */
 	public function setAspectRatio($ratio) {
-		$this->aspectRatio = $ratio;
+		if($ratio <= 0 || !(is_numeric($ratio) || $ratio === null)) {
+			throw new \InvalidArgumentException;
+		}
+		$this->aspectRatio = $ratio * 1;
 		return $this;
 	}
 
+	/**
+	 * Look at the aspect ratio. If there's none, then set it from the implied
+	 * crop width/height.
+	 */
 	public function getAspectRatio() {
-		return $this->aspectRatio;
+		if(isset($this->aspectRatio)) {
+			return $this->aspectRatio;
+		}
+		$impliedAspect = $this->getCropWidth() / $this->getCropHeight();
+		if($impliedAspect <= 0) {
+			throw new \InvalidArgumentException;
+		}
+		return $impliedAspect;
+	}
+
+	/**
+	 * Ensure the aspect ratio is respected regardless of any dodgy data.
+	 * The aspect ratio is otherwise
+	 */
+	public function getCropDimensions() {
+		$x = $this->getCropX();
+		$y = $this->getCropY();
+		$cropWidth = $this->getCropWidth();
+		$cropHeight = $this->getCropHeight();
+
+		// Normalise the width/height with respect to the aspect ratio
+		$aspect = $this->getAspectRatio();
+		$width = $this->getTargetWidth();
+		$height = $this->getTargetHeight();
+		if($width < 1 || $height < 1) {
+			throw new \InvalidArgumentException;
+		}
+		if($width / $height != $aspect) {
+			$height = ceil($width / $aspect);
+			$cropHeight = ceil($cropWidth / $aspect);
+		}
+
+		// Todo: adjust X/Y and width/height if the source image won't fit
+
+		return array(
+			// src_x, src_y
+			'x' => $x,
+			'y' => $y,
+			// dst_w, dst_h
+			'width' => $width,
+			'height' => $height,
+			// src_w, src_h
+			'crop_width' => $cropWidth,
+			'crop_height' => $cropHeight,
+		);
 	}
 
 	/**

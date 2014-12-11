@@ -13,9 +13,10 @@ class GD extends GenericCropper {
 		$filename = $file->getFilename();
 		$extension = strtolower($file->getExtension());
 		$existing = $this->loadExistingImage($filename, $extension);
+		$dimensions = $this->getCropDimensions();
 		$new = imagecreatetruecolor(
-			$this->getTargetWidth(),
-			$this->getTargetHeight()
+			$dimensions['width'],
+			$dimensions['height']
 		);
 		if(!$new) {
 			throw new GD_ResourceException();
@@ -25,12 +26,12 @@ class GD extends GenericCropper {
 			$existing,
 			0,
 			0,
-			$this->getCropX(),
-			$this->getCropY(),
-			$this->getTargetWidth(),
-			$this->getTargetHeight(),
-			$this->getCropWidth(),
-			$this->getCropHeight()
+			$dimensions['x'],
+			$dimensions['y'],
+			$dimensions['width'],
+			$dimensions['height'],
+			$dimensions['crop_width'],
+			$dimensions['crop_height']
 		);
 		if(!$resampleResult) {
 			throw new GD_CropException();
