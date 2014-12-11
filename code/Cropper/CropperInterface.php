@@ -56,6 +56,11 @@ interface CropperInterface {
 	public function setTargetHeight($height);
 
 	/**
+	 * @param float $ratio the ratio (width:height) of the target cropped image
+	 */
+	public function setAspectRatio($ratio);
+
+	/**
 	 * Perform the cropping and return the $out file.
 	 * @param Image $out
 	 * @return Image

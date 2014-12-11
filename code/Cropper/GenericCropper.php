@@ -42,6 +42,11 @@ abstract class GenericCropper implements CropperInterface {
 	 */
 	protected $targetHeight;
 
+	/**
+	 * @var float
+	 */
+	protected $aspectRatio;
+
 	public function setSourceImage(\Image $image) {
 		$filename = $image->getFilename();
 		if(!(is_file($filename) && is_readable($filename))) {
@@ -136,6 +141,18 @@ abstract class GenericCropper implements CropperInterface {
 
 	public function getTargetHeight() {
 		return $this->targetHeight;
+	}
+
+	/**
+	 * @param float $ratio aspect ratio of the target cropped image
+	 */
+	public function setAspectRatio($ratio) {
+		$this->aspectRatio = $ratio;
+		return $this;
+	}
+
+	public function getAspectRatio() {
+		return $this->aspectRatio;
 	}
 
 	/**

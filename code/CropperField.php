@@ -206,6 +206,9 @@ class CropperField extends FormField {
 		$cropper->setTargetHeight(
 			$this->getOption('max_height')
 		);
+		$cropper->setAspectRatio(
+			$this->getOption('aspect_ratio')
+		);
 		$cropper->crop($thumbImage);
 		$thumbImage->write();
 		return $thumbImage;
