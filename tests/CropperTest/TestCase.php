@@ -166,7 +166,7 @@ abstract class TestCase extends \SapphireTest {
 	private static function rm_rf($dir) {
 		$files = array_diff(scandir($dir), array('.','..'));
 		foreach ($files as $file) {
-			(is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
+			(is_dir("$dir/$file")) ? static::rm_rf("$dir/$file") : unlink("$dir/$file");
 		}
 		return rmdir($dir);
 	}
