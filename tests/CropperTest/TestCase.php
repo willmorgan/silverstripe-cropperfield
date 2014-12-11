@@ -101,7 +101,8 @@ abstract class TestCase extends \SapphireTest {
 	 * @return string
 	 */
 	protected function getClassTestDir() {
-		return (new \ReflectionClass(get_class($this)))->getShortName();
+		$refClass = new \ReflectionClass(get_class($this));
+		return $refClass->getShortName();
 	}
 
 	/**
