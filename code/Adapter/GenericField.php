@@ -37,7 +37,7 @@ abstract class GenericField extends ViewableData implements AdapterInterface {
 	}
 
 	public function getImageFilename() {
-		return $this->getFilename();
+		return $this->getSourceImage()->getFilename();
 	}
 
 }
