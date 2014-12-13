@@ -147,10 +147,13 @@ abstract class GenericCropper implements CropperInterface {
 	 * @param float $ratio aspect ratio of the target cropped image
 	 */
 	public function setAspectRatio($ratio) {
-		if($ratio <= 0 || !(is_numeric($ratio) || $ratio === null)) {
-			throw new \InvalidArgumentException;
+		if($ratio !== null && ($ratio <= 0 || !is_numeric($ratio))) {
+			throw new \InvalidArgumentException('Ratio must be numeric or a float, and over 0');
 		}
-		$this->aspectRatio = $ratio * 1;
+		else if($ratio !== null) {
+			$ratio = (int) $ratio;
+		}
+		$this->aspectRatio = $ratio;
 		return $this;
 	}
 
