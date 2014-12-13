@@ -1,29 +1,41 @@
 .cropperfield {
+    overflow: hidden;
+    vertical-align: middle;
 }
 
 .cropperfield__thumbarea {
 	position: relative;
-	height: 128px;
+	width: 256px;
+	min-height: 256px;
+}
+
+.cropperfield__thumbarea img {
+	display: block;
+	max-width: 100%;
 }
 
 .cropperfield__existing,
 .cropperfield__preview-container {
+	position: relative;
+	height: 256px;
+}
+
+.cropperfield__existing img,
+.cropperfield__preview-container {
 	position: absolute;
+	top: 0;
 	opacity: 0;
-	max-width: 128px;
-	max-height: 128px;
+	max-width: 256px;
 	-webkit-transition: opacity linear .2s;
 	transition: opacity linear .2s;
 }
 
 .cropperfield__controls {
-	position: absolute;
-	top: 0;
-	left: 128px;
+	position: relative;
 }
 
 .cropperfield--cropping .cropperfield__preview-container,
-.cropperfield--inactive .cropperfield__existing {
+.cropperfield--inactive .cropperfield__existing img {
 	opacity: 1;
 }
 
