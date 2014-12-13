@@ -31,11 +31,34 @@ class CropperField extends FormField {
 	 * @var array
 	 */
 	protected static $default_options = array(
-	    'aspect_ratio' => 1,
-	    'min_height' => 128,
-	    'max_height' => 128,
-	    'min_width' => 128,
-	    'max_width' => 128,
+		/**
+		 * Null, or a float expression of width/height. Examples:
+		 * 4/3, 16/9, etc.
+		 * If null is given, then it will be implied by the crop's width/height and used for upscaling/downscaling if
+		 * required.
+		 */
+	    'aspect_ratio' => null,
+	    /**
+	     * The minimum dimensions a crop can be, in px.
+	     * If a crop's dimensions are beneath the minimum it will be upscaled, but these settings are fed through to
+	     * the frontend to prevent this.
+	     */
+	    'crop_min_width' => 256,
+	    'crop_min_height' => 256,
+	    /**
+	     * Maximum dimensions a crop can be, in px.
+	     * Blank by default because this restricts the art direction somewhat. If you wish to limit the actual generated
+	     * size of the cropped image, set generated_max_* instead.
+	     */
+	    'crop_max_width' => null,
+	    'crop_max_height' => null,
+	    /**
+	     * The maximum dimensions a generated image can be, in px.
+	     * If the crop is above this, then it will be downscaled according to the declared aspect ratio, or
+	     * the implied aspect ratio if one is not specified.
+	     */
+	    'generated_max_width' => 512,
+	    'generated_max_height' => 512,
 	);
 
 	private static $dependencies = array(
@@ -200,11 +223,11 @@ class CropperField extends FormField {
 		$cropper = $this->getCropper();
 		$cropper->setCropData($this->getCropData());
 		$cropper->setSourceImage($file);
-		$cropper->setTargetWidth(
-			$this->getOption('max_width')
+		$cropper->setMaxWidth(
+			$this->getOption('generated_max_width')
 		);
-		$cropper->setTargetHeight(
-			$this->getOption('max_height')
+		$cropper->setMaxHeight(
+			$this->getOption('generated_max_height')
 		);
 		$cropper->setAspectRatio(
 			$this->getOption('aspect_ratio')

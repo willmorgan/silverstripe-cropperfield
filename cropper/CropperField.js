@@ -13,6 +13,10 @@
 				multiple: true,
 				aspectRatio: options.aspect_ratio,
 				autoCropArea: .8,
+				minWidth: options['crop_min_width'],
+				minHeight: options['crop_min_height'],
+				maxWidth: options['crop_max_width'],
+				maxHeight: options['crop_max_height'],
 				preview: preview,
 				done: function(data) {
 					dataField.val(JSON.stringify(data));

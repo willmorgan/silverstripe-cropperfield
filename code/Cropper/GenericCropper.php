@@ -35,12 +35,12 @@ abstract class GenericCropper implements CropperInterface {
 	/**
 	 * @var int
 	 */
-	protected $targetWidth;
+	protected $maxWidth;
 
 	/**
 	 * @var int
 	 */
-	protected $targetHeight;
+	protected $maxHeight;
 
 	/**
 	 * @var float
@@ -122,25 +122,25 @@ abstract class GenericCropper implements CropperInterface {
 	/**
 	 * @param int $width width of the target cropped image
 	 */
-	public function setTargetWidth($width) {
-		$this->targetWidth = $width;
+	public function setMaxWidth($width) {
+		$this->maxWidth = $width;
 		return $this;
 	}
 
-	public function getTargetWidth() {
-		return $this->targetWidth;
+	public function getMaxWidth() {
+		return $this->maxWidth;
 	}
 
 	/**
 	 * @param int $height height of the target cropped image
 	 */
-	public function setTargetHeight($height) {
-		$this->targetHeight = $height;
+	public function setMaxHeight($height) {
+		$this->maxHeight = $height;
 		return $this;
 	}
 
-	public function getTargetHeight() {
-		return $this->targetHeight;
+	public function getMaxHeight() {
+		return $this->maxHeight;
 	}
 
 	/**
@@ -181,8 +181,8 @@ abstract class GenericCropper implements CropperInterface {
 
 		// Normalise the width/height with respect to the aspect ratio
 		$aspect = $this->getAspectRatio();
-		$width = $this->getTargetWidth();
-		$height = $this->getTargetHeight();
+		$width = $this->getMaxWidth();
+		$height = $this->getMaxHeight();
 		if($width < 1 || $height < 1) {
 			throw new \InvalidArgumentException;
 		}
@@ -191,7 +191,7 @@ abstract class GenericCropper implements CropperInterface {
 			$cropHeight = ceil($cropWidth / $aspect);
 		}
 
-		// Todo: adjust X/Y and width/height if the source image won't fit
+		// Todo: adjust X/Y and width/height if out of source image bounds
 
 		return array(
 			// src_x, src_y

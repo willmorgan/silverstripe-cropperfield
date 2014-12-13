@@ -46,14 +46,14 @@ interface CropperInterface {
 	public function setCropHeight($height);
 
 	/**
-	 * @param int $width width of the target cropped image
+	 * @param int $width max width of a generated image; if dimension exceeds, must downscale
 	 */
-	public function setTargetWidth($width);
+	public function setMaxWidth($width);
 
 	/**
-	 * @param int $height height of the target cropped image
+	 * @param int $height max height of a generated image; if dimension exceeds, must downscale
 	 */
-	public function setTargetHeight($height);
+	public function setMaxHeight($height);
 
 	/**
 	 * @param float $ratio the ratio (width:height) of the target cropped image

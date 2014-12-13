@@ -68,8 +68,8 @@ class GenericCropperTest extends TestCase {
 		$cropper->setCropY($y);
 		$cropper->setCropWidth($width);
 		$cropper->setCropHeight($height);
-		$cropper->setTargetWidth($targetWidth);
-		$cropper->setTargetHeight($targetHeight);
+		$cropper->setMaxWidth($targetWidth);
+		$cropper->setMaxHeight($targetHeight);
 
 		return $cropper;
 	}
