@@ -181,20 +181,29 @@ abstract class GenericCropper implements CropperInterface {
 		$y = $this->getCropY();
 		$cropWidth = $this->getCropWidth();
 		$cropHeight = $this->getCropHeight();
+		$width = $cropWidth;
+		$height = $cropHeight;
 
 		// Normalise the width/height with respect to the aspect ratio
-		$aspect = $this->getAspectRatio();
-		$width = $this->getMaxWidth();
-		$height = $this->getMaxHeight();
+		$maxWidth = $this->getMaxWidth();
+		$maxHeight = $this->getMaxHeight();
+
+
 		if($width < 1 || $height < 1) {
 			throw new \InvalidArgumentException;
 		}
-		if($width / $height != $aspect) {
-			$height = ceil($width / $aspect);
-			$cropHeight = ceil($cropWidth / $aspect);
+
+		if($width > $maxWidth) {
+			$scaleDownRatio = $cropWidth / $maxWidth;
+			$height = ceil($height / $scaleDownRatio);
+			$width = $maxWidth;
 		}
 
-		// Todo: adjust X/Y and width/height if out of source image bounds
+		if($height > $maxHeight) {
+			$scaleDownRatio = $cropHeight / $maxHeight;
+			$width = ceil($width / $scaleDownRatio);
+			$height = $maxHeight;
+		}
 
 		return array(
 			// src_x, src_y
