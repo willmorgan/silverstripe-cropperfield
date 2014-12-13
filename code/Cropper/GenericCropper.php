@@ -48,9 +48,9 @@ abstract class GenericCropper implements CropperInterface {
 	protected $aspectRatio;
 
 	public function setSourceImage(\Image $image) {
-		$filename = $image->getFilename();
+		$filename = $image->getFullPath();
 		if(!(is_file($filename) && is_readable($filename))) {
-			throw new GenericCropper_InvalidFileException;
+			throw new GenericCropper_InvalidFileException($filename);
 		}
 		$this->source = $image;
 		return $this;
