@@ -151,7 +151,7 @@ abstract class GenericCropper implements CropperInterface {
 			throw new \InvalidArgumentException('Ratio must be numeric or a float, and over 0');
 		}
 		else if($ratio !== null) {
-			$ratio = (int) $ratio;
+			$ratio = (float) $ratio;
 		}
 		$this->aspectRatio = $ratio;
 		return $this;
@@ -166,9 +166,6 @@ abstract class GenericCropper implements CropperInterface {
 			return $this->aspectRatio;
 		}
 		$impliedAspect = $this->getCropWidth() / $this->getCropHeight();
-		if($impliedAspect <= 0) {
-			throw new \InvalidArgumentException;
-		}
 		return $impliedAspect;
 	}
 
@@ -188,20 +185,28 @@ abstract class GenericCropper implements CropperInterface {
 		$maxWidth = $this->getMaxWidth();
 		$maxHeight = $this->getMaxHeight();
 
+		$aspectRatio = $this->getAspectRatio();
+
 
 		if($width < 1 || $height < 1) {
-			throw new \InvalidArgumentException;
+			throw new \InvalidArgumentException('Values must be over 1');
+		}
+
+		// Fix the aspect ratio if the crop is wrong
+		// This must happen first so invalid values can be compensated for
+		if($width / $height != $aspectRatio) {
+			$height = $width / $aspectRatio;
 		}
 
 		if($width > $maxWidth) {
 			$scaleDownRatio = $cropWidth / $maxWidth;
-			$height = ceil($height / $scaleDownRatio);
+			$height = $height / $scaleDownRatio;
 			$width = $maxWidth;
 		}
 
 		if($height > $maxHeight) {
 			$scaleDownRatio = $cropHeight / $maxHeight;
-			$width = ceil($width / $scaleDownRatio);
+			$width = $width / $scaleDownRatio;
 			$height = $maxHeight;
 		}
 
@@ -210,8 +215,8 @@ abstract class GenericCropper implements CropperInterface {
 			'x' => $x,
 			'y' => $y,
 			// dst_w, dst_h
-			'width' => $width,
-			'height' => $height,
+			'width' => ceil($width),
+			'height' => ceil($height),
 			// src_w, src_h
 			'crop_width' => $cropWidth,
 			'crop_height' => $cropHeight,

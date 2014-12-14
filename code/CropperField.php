@@ -129,6 +129,17 @@ class CropperField extends FormField {
 		return $this->options[$name];
 	}
 
+	/**
+	 * Set an option after initialisation
+	 * @param string $name
+	 * @param string $value
+	 * @return $this
+	 */
+	public function setOption($name, $value) {
+		$this->options[$name] = $value;
+		return $this;
+	}
+
 	public function getAdapter() {
 		return $this->adapter;
 	}

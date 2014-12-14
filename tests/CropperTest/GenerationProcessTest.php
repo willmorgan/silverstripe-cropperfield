@@ -43,8 +43,8 @@ class GenerationProcessTest extends TestCase {
 		$options = $field->getOptions();
 		list($genWidth, $genHeight) = getimagesize($image->Filename);
 
-		$this->assertEquals($options['max_width'], $genWidth);
-		$this->assertEquals($options['max_height'], $genHeight);
+		$this->assertEquals(100, $genWidth);
+		$this->assertEquals(200, $genHeight);
 
 		$this->cleanFileAssets('Image');
 	}
