@@ -230,10 +230,11 @@ class CropperField extends FormField {
 			throw new CropperField_AdapterBadFileException;
 		}
 		$thumbImage = new Image();
-		$thumbImage->ParentID = $file->ParentID;
 		$cropper = $this->getCropper();
 		$cropper->setCropData($this->getCropData());
-		$cropper->setSourceImage($file);
+		$cropper->setSourceImage(
+			$this->getAdapter()->getSourceImage()
+		);
 		$cropper->setMaxWidth(
 			$this->getOption('generated_max_width')
 		);

@@ -10,7 +10,7 @@ class GD extends GenericCropper {
 
 	public function crop(Image $image) {
 		$file = $this->getSourceImage();
-		$filename = $file->getFilename();
+		$filename = $file->getFullPath();
 		$extension = strtolower($file->getExtension());
 		$existing = $this->loadExistingImage($filename, $extension);
 		$dimensions = $this->getCropDimensions();
@@ -43,23 +43,22 @@ class GD extends GenericCropper {
 	}
 
 	/**
-	 * @param string $filename
+	 * @param string $filepath
 	 * @param string $extension
 	 * @return resource
 	 */
-	public function loadExistingImage($filename, $extension) {
-		$filename = BASE_PATH . DIRECTORY_SEPARATOR . $filename;
-		if(!is_readable($filename)) {
-			throw new GD_ImageReadException($filename);
+	public function loadExistingImage($filepath, $extension) {
+		if(!is_readable($filepath)) {
+			throw new GD_ImageReadException($filepath);
 		}
 		switch($extension) {
 			case 'jpeg':
 			case 'jpg':
-				return imagecreatefromjpeg($filename);
+				return imagecreatefromjpeg($filepath);
 			case 'png':
-				return imagecreatefrompng($filename);
+				return imagecreatefrompng($filepath);
 			case 'gif':
-				return imagecreatefromgif($filename);
+				return imagecreatefromgif($filepath);
 			default:
 				throw new GD_InvalidFormatException();
 		}
