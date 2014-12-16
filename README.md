@@ -17,6 +17,7 @@ For the field itself, the frontend is powered by [Cropper v0.7.5](https://github
 
 0. `composer require willmorgan/silverstripe-cropperfield`
 1. Specify a version constraint.
+  * While this module is in heavy development, you probably want to use `~0.X` or similar.
 
 ### Screenshot
 
