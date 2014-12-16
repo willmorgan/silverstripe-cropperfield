@@ -6,7 +6,7 @@
 		var dataField = field.find('.js-cropperfield__data');
 		var cropperHeight;
 		var construct = function() {
-			var options = JSCONFIG.CropperField[_inst.id()];
+			var options = JSON.parse(field.attr('data-config'));
 			var fieldID = field.attr('data-field-id');
 			var preview = field.find('.cropperfield__preview');
 			target.cropper({

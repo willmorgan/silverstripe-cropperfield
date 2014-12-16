@@ -1,4 +1,4 @@
-<div class="container cropperfield js-cropperfield" data-field-id="$Name">
+<div class="container cropperfield js-cropperfield" $AttributesHTML>
 	<div class="cropperfield__thumbarea">
 		<div class="cropperfield__existing">
 			$ExistingThumbnail

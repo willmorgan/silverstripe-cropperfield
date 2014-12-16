@@ -21,7 +21,6 @@ use DataObject;
 use DataObjectInterface;
 
 // Frontend dependencies
-use JSConfig;
 use Director;
 use Requirements;
 
@@ -275,6 +274,13 @@ class CropperField extends FormField {
 
 	public function Field($properties = array()) {
 		$this->requireFrontend();
+		$this->setAttribute(
+			'data-config',
+			json_encode($this->getOptions())
+		);
+		$this->setAttribute(
+			'data-field-id', $this->getName()
+		);
 		return parent::Field($properties);
 	}
 
@@ -294,10 +300,6 @@ class CropperField extends FormField {
 		);
 		Requirements::combine_files('cropperfield-all.css', $cssFiles);
 		Requirements::combine_files('cropperfield-all.js', $jsFiles);
-		JSConfig::add('CropperField', array(
-			$this->getName() => $this->getOptions()
-		));
-		JSConfig::insert();
 	}
 
 }
