@@ -1,7 +1,12 @@
 <div class="container cropperfield js-cropperfield" $AttributesHTML>
+	<% if $Adapter.File || $ExistingThumbnail %>
 	<div class="cropperfield__thumbarea">
 		<div class="cropperfield__existing">
+			<% if $ExistingThumbnail %>
 			$ExistingThumbnail
+			<% else %>
+			<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="<%t CropperField.LABELS.ExistingNone "No existing crop" %>" />
+			<% end_if %>
 			<span class="cropperfield__label cropperfield__label--existing">
 				<%t CropperField.LABELS.Existing "Existing Crop" %>
 			</span>
@@ -27,4 +32,7 @@
 		</div>
 	</div>
 	<input type="hidden" class="js-cropperfield__data" name="{$Name}[Data]" />
+	<% else %>
+	<%t CropperField.MESSAGES.NoSource "Please first upload a file and save it to this record" %>
+	<% end_if %>
 </div>
