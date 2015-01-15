@@ -19,7 +19,7 @@
 		</div>
 		<div class="cropperfield__controls">
 			<label>
-				<input type="checkbox" class="js-cropperfield__toggle" name="{$Name}[Enabled]" />
+				<input type="checkbox" class="js-cropperfield__toggle" name="{$Name}[Enabled]"<% if not $ExistingThumbnail %> checked="checked"<% end_if %> />
 				<%t CropperField.CONTROLS.ToggleEdit "Edit this cropped image" %>
 			</label>
 		</div>
