@@ -176,7 +176,7 @@ class CropperField extends FormField {
 	 * @return void
 	 */
 	public function saveInto(DataObjectInterface $object) {
-		if(!$this->canCrop()) {
+		if(!$this->canCrop() || !$this->hasSourceFile()) {
 			return;
 		}
 		$object->setField($this->getName() . 'ID', $this->generateCropped()->ID);
@@ -270,6 +270,15 @@ class CropperField extends FormField {
 	public function canCrop() {
 		$value = $this->Value();
 		return !empty($value['Enabled']);
+	}
+
+	/**
+	 * If the file does not exist, then do not (re)generate (otherwise doing so would cause errors)
+	 * @return boolean
+	 */
+	public function hasSourceFile() {
+		$file = $this->getAdapter()->getFile();
+		return $file instanceof File && $file->exists();
 	}
 
 	public function Field($properties = array()) {
