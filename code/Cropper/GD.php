@@ -21,6 +21,12 @@ class GD extends GenericCropper {
 		if(!$new) {
 			throw new GD_ResourceException();
 		}
+		
+		if ($extension == 'png') {
+			imagealphablending($new, false );
+			imagesavealpha($new, true);
+		}
+		
 		$resampleResult = imagecopyresampled(
 			$new,
 			$existing,
