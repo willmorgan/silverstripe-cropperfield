@@ -21,12 +21,7 @@ class GD extends GenericCropper {
 		if(!$new) {
 			throw new GD_ResourceException();
 		}
-		
-		if ($extension == 'png') {
-			imagealphablending($new, false );
-			imagesavealpha($new, true);
-		}
-		
+
 		$resampleResult = imagecopyresampled(
 			$new,
 			$existing,
@@ -42,7 +37,7 @@ class GD extends GenericCropper {
 		if(!$resampleResult) {
 			throw new GD_CropException();
 		}
-		$thumbFile = $this->saveCanvas($new, $extension);
+		$thumbFile = $this->saveCanvas($this->prepareCanvas($new), $extension);
 		$image->Filename = $thumbFile;
 		$image->write();
 		return $image;
@@ -68,6 +63,21 @@ class GD extends GenericCropper {
 			default:
 				throw new GD_InvalidFormatException();
 		}
+	}
+
+	/**
+	 * @param resource $canvas
+	 * @param string $extension
+	 * @return resource
+	 */
+	public function prepareCanvas($canvas, $extension) {
+		switch($extension) {
+			case 'png':
+				imagealphablending($canvas, false);
+				imagesavealpha($canvas, true);
+			break;
+		}
+		return $canvas;
 	}
 
 	/**
