@@ -16,6 +16,7 @@
 		"source": "https://github.com/willmorgan/silverstripe-cropperfield/"
 	},
 	"require": {
+        "silverstripe/framework": "^3.1",
 		"composer/installers": "~1.0",
 		"php": ">=5.3"
 	},
