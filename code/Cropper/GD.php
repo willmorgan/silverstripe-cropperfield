@@ -37,7 +37,7 @@ class GD extends GenericCropper {
 		if(!$resampleResult) {
 			throw new GD_CropException();
 		}
-		$thumbFile = $this->saveCanvas($this->prepareCanvas($new), $extension);
+		$thumbFile = $this->saveCanvas($this->prepareCanvas($new, $extension), $extension);
 		$image->Filename = $thumbFile;
 		$image->write();
 		return $image;
