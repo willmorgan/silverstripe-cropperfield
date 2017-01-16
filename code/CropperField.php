@@ -26,39 +26,123 @@ use Requirements;
 
 class CropperField extends FormField {
 
-	/**
-	 * @var array
-	 */
-	protected static $default_options = array(
-		/**
-		 * Null, or a float expression of width/height. Examples:
-		 * 4/3, 16/9, etc.
-		 * If null is given, then it will be implied by the crop's width/height and used for upscaling/downscaling if
-		 * required.
-		 */
-	    'aspect_ratio' => null,
-	    /**
-	     * The minimum dimensions a crop can be, in px.
-	     * If a crop's dimensions are beneath the minimum it will be upscaled, but these settings are fed through to
-	     * the frontend to prevent this.
-	     */
-	    'crop_min_width' => 256,
-	    'crop_min_height' => 256,
-	    /**
-	     * Maximum dimensions a crop can be, in px.
-	     * Blank by default because this restricts the art direction somewhat. If you wish to limit the actual generated
-	     * size of the cropped image, set generated_max_* instead.
-	     */
-	    'crop_max_width' => null,
-	    'crop_max_height' => null,
-	    /**
-	     * The maximum dimensions a generated image can be, in px.
-	     * If the crop is above this, then it will be downscaled according to the declared aspect ratio, or
-	     * the implied aspect ratio if one is not specified.
-	     */
-	    'generated_max_width' => 512,
-	    'generated_max_height' => 512,
-	);
+    private static $cropper_options = array(
+        /**
+         * Define the view mode of the cropper.
+         * - 0 : the crop box is just within the container
+         * - 1 : the crop box should be within the canvas
+         * - 2 : the canvas should not be within the container
+         * - 3 : the container should be within the canvas
+         */
+        'viewMode' => 0,
+        /**
+         * Define the dragging mode of the cropper.
+         * - 'crop'
+         * - 'move'
+         * - 'none'
+         */
+        'dragMode' => 'crop',
+        /**
+         * Set the aspect ratio of the crop box. By default, the crop box is free ratio.
+         * Examples: 4/3, 16/9, etc.
+         */
+        'aspect_ratio' => null,
+        /**
+         * Show the black modal above the image and under the crop box.
+         */
+        'modal' => true,
+        /**
+         * Show the dashed lines above the crop box.
+         */
+        'guides' => true,
+        /**
+         * Show the grid background of the container.
+         */
+        'background' => true,
+        /**
+         * Enable to crop the image automatically when initialize.
+         */
+        'autoCrop' => true,
+        /**
+         * A number between 0 and 1. Define the automatic cropping area size (percentage).
+         */
+        'autoCropArea' => 0.8,
+        /**
+         * Enable to move the image.
+         */
+        'movable' => true,
+        /**
+         * Enable to rotate the image.
+         */
+        'rotatable' => true,
+        /**
+         * Enable to scale the image.
+         */
+        'scalable' => true,
+        /**
+         * Enable to zoom the image.
+         */
+        'zoomable' => true,
+        /**
+         * Enable to zoom the image by dragging touch.
+         */
+        'zoomOnTouch' => true,
+        /**
+         * Enable to zoom the image by wheeling mouse.
+         */
+        'zoomOnWheel' => true,
+        /**
+         * Define zoom ratio when zoom the image by wheeling mouse.
+         */
+        'wheelZoomRatio' => 0.1,
+        /**
+         * Enable to move the crop box by dragging.
+         */
+        'cropBoxMovable' => true,
+        /**
+         * Enable to resize the crop box by dragging.
+         */
+        'cropBoxResizable' => true,
+        /**
+         * Enable to toggle drag mode between "crop" and "move" when click twice on the cropper.
+         */
+        'toggleDragModeOnDblclick' => true,
+        /**
+         * The minimum width of the container.
+         */
+        'minContainerWidth' => 200,
+        /**
+         * The minimum height of the container.
+         */
+        'minContainerHeight' => 100,
+        /**
+         * The minimum width of the canvas (image wrapper).
+         */
+        'minCanvasWidth' => 0,
+        /**
+         * The minimum height of the canvas (image wrapper).
+         */
+        'minCanvasHeight' => 0,
+        /**
+         * The minimum width of the crop box.
+         *
+         * Note: This size is relative to the page, not the image.
+         */
+        'minCropBoxWidth' => 0,
+        /**
+         * The minimum height of the crop box.
+         *
+         * Note: This size is relative to the page, not the image.
+         */
+        'minCropBoxHeight' => 0,
+        /**
+         * The maximum dimensions a generated image can be, in px.
+         * If the crop is above this, then it will be downscaled according to the declared aspect ratio, or
+         * the implied aspect ratio if one is not specified.
+         **/
+        'generated_max_width' => 512,
+        'generated_max_height' => 512,
+    );
 
 	private static $dependencies = array(
 		'cropper' => '%$CropperService',
@@ -75,6 +159,12 @@ class CropperField extends FormField {
 	 * @var \CropperField\Cropper\CropperInterface
 	 */
 	protected $cropper;
+
+    /**
+     * The options that will be used to initalize the plugin.
+     * @var array
+     */
+	protected $options;
 
 	/**
 	 * @param string $relation of the relationship, and thus, the field
@@ -108,8 +198,8 @@ class CropperField extends FormField {
 	 * @param array $options
 	 * @return $this
 	 */
-	public function setOptions(array $options) {
-		$defaults = static::$default_options;
+	public function setOptions(array $options = array()) {
+		$defaults = $this->config()->get('cropper_options');
 		$this->options = array_merge($defaults, $options);
 		return $this;
 	}
@@ -121,9 +211,10 @@ class CropperField extends FormField {
 		return $this->options;
 	}
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @param $name
+     * @return mixed
+     */
 	public function getOption($name) {
 		return $this->options[$name];
 	}

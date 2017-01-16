@@ -18,6 +18,7 @@
 .cropperfield__preview-container {
 	position: relative;
 	height: 256px;
+	display: block;
 }
 
 .cropperfield__existing img,
@@ -76,4 +77,9 @@
 .cropperfield__label--existing {
 	border-color: #0c0;
 	color: #0c0;
+}
+
+.js-cropperfield__target {
+	max-width: 100%;
+	max-height: 100%;
 }
