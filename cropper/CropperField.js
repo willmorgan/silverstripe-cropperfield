@@ -11,14 +11,31 @@
 			var preview = field.find('.cropperfield__preview');
 			target.cropper({
 				multiple: true,
-				aspectRatio: options.aspect_ratio,
-				autoCropArea: .8,
-				minWidth: options['crop_min_width'],
-				minHeight: options['crop_min_height'],
-				maxWidth: options['crop_max_width'],
-				maxHeight: options['crop_max_height'],
+				viewMode: options.viewMode,
+				dragMode: options.dragMode,
+                aspectRatio: options.aspectRatio,
+				modal: options.modal,
+				guides: options.guides,
+				background: options.background,
+				autoCropArea: options.autoCropArea,
+				movable: options.movable,
+				rotatable: options.rotatable,
+				scalable: options.scalable,
+				zoomable: options.zoomable,
+				zoomOnTouch: options.zoomOnTouch,
+				zoomOnWheel: options.zoomOnWheel,
+                wheelZoomRatio: options.wheelZoomRatio,
+                cropBoxMovable: options.cropBoxMovable,
+                cropBoxResizable: options.cropBoxResizable,
+                toggleDragModeOnDblclick: options.toggleDragModeOnDblclick,
+                minContainerWidth: options.minContainerWidth,
+                minContainerHeight: options.minContainerHeight,
+                minCanvasWidth: options.minCanvasWidth,
+                minCanvasHeight: options.minCanvasHeight,
+                minCropBoxWidth: options.minCropBoxWidth,
+                minCropBoxHeight: options.minCropBoxHeight,
 				preview: preview,
-				done: function(data) {
+                crop: function(data) {
 					dataField.val(JSON.stringify(data));
 				},
 				built: function() {
@@ -48,7 +65,7 @@
 		this.setCropperHeight = function(height) {
 			cropperHeight = height;
 			return this;
-		}
+		};
 		this.getCropperHeight = function() {
 			return cropperHeight || 600;
 		};
@@ -85,7 +102,7 @@
 			instance.destroy();
 			delete collection[key];
 		});
-	}
+	};
 
 	$(function() {
 

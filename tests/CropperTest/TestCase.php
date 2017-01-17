@@ -110,7 +110,7 @@ abstract class TestCase extends \SapphireTest {
 	 * @return string
 	 */
 	protected function getTestAssetDir() {
-		return ASSETS_DIR . DIRECTORY_SEPARATOR . $this->getClassTestDir();
+		return ASSETS_DIR . DIRECTORY_SEPARATOR . $this->getClassTestDir() . '/cropperfield/tests/TestAssets';
 	}
 
 	/**
@@ -122,7 +122,7 @@ abstract class TestCase extends \SapphireTest {
 		$absPath = $this->getTestAssetDir();
 		$classTestDir = $this->getClassTestDir();
 		if(!file_exists($absPath)) {
-			mkdir($absPath);
+			mkdir($absPath, 0777, true);
 		}
 		foreach($fileIDs as $fileID) {
 			$file = $fixtureClass::get()->byId($fileID);
@@ -130,7 +130,7 @@ abstract class TestCase extends \SapphireTest {
 				continue;
 			}
 			$target = ASSETS_PATH.'/'.$classTestDir.'/'.$file->Filename;
-			$source = $sourceDir.'/'.$file->Filename;
+			$source = $file->Filename;
 			if(!copy($source, $target)) {
 				throw new \LogicException(
 					'Could not copy fixture file'
