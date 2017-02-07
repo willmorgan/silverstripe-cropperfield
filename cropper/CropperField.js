@@ -42,6 +42,10 @@
 					_inst.setCropperHeight(
 						field.find('.cropper-container')[0].clientHeight
 					);
+					field.trigger('afterCropperBuilt', [field, target, preview]);
+				},
+				ready: function() {
+					field.trigger('afterCropperReady', [field, target, preview]);
 				}
 			});
 			target.cropper('disable');
