@@ -46,7 +46,7 @@
 			});
 			target.cropper('disable');
 			setupCheckbox();
-			CropperField.instances.push(_inst);
+			target.cropper('enable');
 			return this;
 		};
 		var setupCheckbox = function() {
