@@ -36,7 +36,7 @@
                 minCropBoxHeight: options.minCropBoxHeight,
 				preview: preview,
                 crop: function(data) {
-					dataField.val(JSON.stringify(data));
+					dataField.val(JSON.stringify(data.detail));
 				},
 				built: function() {
 					_inst.setCropperHeight(

@@ -396,6 +396,7 @@ class CropperField extends FormField {
 		);
 		$jsFiles = array(
 			CROPPERFIELD_PATH . '/cropper/cropper' . $extension . '.js',
+			CROPPERFIELD_PATH . '/cropper/jquery-cropper' . $extension . '.js',
 			CROPPERFIELD_PATH . '/cropper/CropperField.js',
 		);
 		Requirements::combine_files('cropperfield-all.css', $cssFiles);
